@@ -12,12 +12,13 @@ import {
 import styles from "./styles";
 
 type MusicData = {
-	songTitle: string;
-	artistName: string;
-	albumName: string;
-	releaseYear: string;
-	duration: string;
-	bannerUrl?: string;
+  id: string;
+  titulo: string;
+  artista: string;
+  album: string;
+  anoLancamento: string;
+  duracao: string;
+  bannerUrl?: string;
 };
 
 type Props = {
@@ -35,29 +36,31 @@ export default function Modal({
 	initialValues = {},
 	title = "Editar Música",
 }: Props) {
-	const [songTitle, setSongTitle] = useState("");
-	const [artistName, setArtistName] = useState("");
-	const [albumName, setAlbumName] = useState("");
-	const [releaseYear, setReleaseYear] = useState("");
-	const [duration, setDuration] = useState("");
+  const [id, setId] = useState("");
+	const [titulo, settitulo] = useState("");
+	const [artista, setartista] = useState("");
+	const [album, setalbum] = useState("");
+	const [anoLancamento, setanoLancamento] = useState("");
+	const [duracao, setduracao] = useState("");
 	const [bannerUrl, setBannerUrl] = useState("");
 
 	useEffect(() => {
-		setSongTitle(initialValues.songTitle ?? "");
-		setArtistName(initialValues.artistName ?? "");
-		setAlbumName(initialValues.albumName ?? "");
-		setReleaseYear(initialValues.releaseYear ?? "");
-		setDuration(initialValues.duration ?? "");
+    setId(initialValues.id ?? "");
+		settitulo(initialValues.titulo ?? "");
+		setartista(initialValues.artista ?? "");
+		setalbum(initialValues.album ?? "");
+		setanoLancamento(initialValues.anoLancamento ?? "");
+		setduracao(initialValues.duracao ?? "");
 		setBannerUrl(initialValues.bannerUrl ?? "");
 	}, [initialValues, visible]);
 
 	function handleSave() {
-		if (!songTitle || !artistName || !albumName || !releaseYear || !duration) {
+		if (!titulo || !artista || !album || !anoLancamento || !duracao) {
 			Alert.alert("Erro", "Por favor, preencha todos os campos.");
 			return;
 		}
 
-		onSave({ songTitle, artistName, albumName, releaseYear, duration, bannerUrl });
+		onSave({ id, titulo, artista, album, anoLancamento, duracao, bannerUrl });
 		onClose();
 	}
 
@@ -70,37 +73,37 @@ export default function Modal({
 					<ScrollView contentContainerStyle={styles.form}>
 						<TextInput
 							placeholder="Título da Música"
-							value={songTitle}
-							onChangeText={setSongTitle}
+							value={titulo}
+							onChangeText={settitulo}
 							style={styles.input}
 						/>
 
 						<TextInput
 							placeholder="Artista"
-							value={artistName}
-							onChangeText={setArtistName}
+							value={artista}
+							onChangeText={setartista}
 							style={styles.input}
 						/>
 
 						<TextInput
 							placeholder="Álbum"
-							value={albumName}
-							onChangeText={setAlbumName}
+							value={album}
+							onChangeText={setalbum}
 							style={styles.input}
 						/>
 
 						<TextInput
 							placeholder="Ano de Lançamento"
-							value={releaseYear}
-							onChangeText={setReleaseYear}
+							value={anoLancamento}
+							onChangeText={setanoLancamento}
 							style={styles.input}
 							keyboardType="numeric"
 						/>
 
 						<TextInput
 							placeholder="Duração"
-							value={duration}
-							onChangeText={setDuration}
+							value={duracao}
+							onChangeText={setduracao}
 							style={styles.input}
 						/>
 

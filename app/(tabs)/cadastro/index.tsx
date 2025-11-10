@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Text, Alert } from "react-native";
 import styles from "./styles";
+import { db } from "../../../src/firebaseConfig";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 export default function CadastroScreen() {
   const [songTitle, setSongTitle] = useState("");
@@ -10,14 +12,36 @@ export default function CadastroScreen() {
   const [duration, setDuration] = useState("");
   const [bannerUrl, setBannerUrl] = useState("");
 
-  function handleCadastro() {
+  async function handleCadastro() {
     if (!songTitle || !artistName || !albumName || !releaseYear || !duration) {
-      Alert.alert("Erro", "Por favor, preencha todos os campos.");
+      Alert.alert("Erro", "Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
-    // TODO: send data to store / API
-    Alert.alert("Sucesso", "Música cadastrada com sucesso!");
+    try {
+      await addDoc(collection(db, "musicas2"), {
+        titulo: songTitle.trim(),
+        artista: artistName.trim(),
+        album: albumName.trim(),
+        anoLancamento: releaseYear.trim(),
+        duracao: duration.trim(),
+        bannerUrl: bannerUrl.trim() || null,
+        criadoEm: new Date().toISOString()
+      });
+
+      Alert.alert("Sucesso", "🎵 Música cadastrada com sucesso!");
+
+      setSongTitle("");
+      setArtistName("");
+      setAlbumName("");
+      setReleaseYear("");
+      setDuration("");
+      setBannerUrl("");
+
+    } catch (error) {
+      console.error("Erro ao salvar música:", error);
+      Alert.alert("Erro", "Não foi possível salvar a música.");
+    } 
   }
 
   return (
